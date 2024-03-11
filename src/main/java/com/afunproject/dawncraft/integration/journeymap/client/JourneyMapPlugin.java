@@ -1,9 +1,13 @@
 package com.afunproject.dawncraft.integration.journeymap.client;
 
+import java.util.EnumSet;
+import java.util.List;
+
 import com.afunproject.dawncraft.Constants;
 import com.afunproject.dawncraft.integration.epicfight.client.KeyToast;
 import com.afunproject.dawncraft.integration.journeymap.network.AddWaypointMessage;
 import com.google.common.collect.Lists;
+
 import journeymap.client.JourneymapClient;
 import journeymap.client.api.ClientPlugin;
 import journeymap.client.api.IClientAPI;
@@ -15,13 +19,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-
-import java.util.EnumSet;
-import java.util.List;
 
 @ClientPlugin
 public class JourneyMapPlugin implements IClientPlugin {
@@ -61,10 +62,10 @@ public class JourneyMapPlugin implements IClientPlugin {
 
     public void addWaypoint(AddWaypointMessage message, boolean sendMessage) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (sendMessage) player.sendMessage(new TranslatableComponent("message.dawncraft.waypoint", message.getStructure()), null);
+        if (sendMessage) player.sendSystemMessage(Component.translatable("message.dawncraft.waypoint", message.getStructure()));
         if (startedMapping) {
             try {
-                String name = new TranslatableComponent(message.getStructure()).getString();
+                String name = Component.translatable(message.getStructure()).getString();
                 BlockPos pos = message.getPos();
                 ResourceKey<Level> dim = player.level.dimension();
                 Waypoint waypoint = new Waypoint(Constants.MODID, name, dim, pos);

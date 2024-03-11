@@ -35,7 +35,7 @@ public class TagCondition implements QuestCondition {
 	public boolean apply(Player player, Mob entity, int phase, boolean isTest) {
 		List<ItemStack> stacks = Lists.newArrayList();
 		for (ItemStack stack : player.getInventory().items) {
-			if (stack.m_204117_(tag) &! contains(stacks, stack)) {
+			if (stack.is(tag) &! contains(stacks, stack)) {
 				stacks.add(stack);
 				if (stacks.size() >= count) break;
 			}

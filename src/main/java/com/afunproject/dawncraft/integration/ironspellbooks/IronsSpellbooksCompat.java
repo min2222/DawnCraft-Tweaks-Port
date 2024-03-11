@@ -1,6 +1,6 @@
 package com.afunproject.dawncraft.integration.ironspellbooks;
 
-import io.redspace.ironsspellbooks.capabilities.spell.SpellData;
+import io.redspace.ironsspellbooks.api.spells.SpellData;
 import io.redspace.ironsspellbooks.capabilities.spellbook.SpellBookData;
 import net.minecraft.world.item.ItemStack;
 

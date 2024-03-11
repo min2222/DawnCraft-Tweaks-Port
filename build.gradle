@@ -114,8 +114,12 @@ dependencies {
 	implementation fg.deobf("curse.maven:patchouli-306770:4031402")
 	implementation fg.deobf("curse.maven:curios-309927:5066842")
     implementation fg.deobf("curse.maven:create-328085:4835190")
-    //implementation fg.deobf('curse.maven:questgiver-618562:4586115')
-    //implementation fg.deobf('curse.maven:dawncraftmobs-831982:4592301')
+    implementation fg.deobf("curse.maven:journeymap-32274:4532924")
+    implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:5144911")
+    
+    //TODO
+    //implementation fg.deobf("curse.maven:quest-giver-618562:4586115")
+    //implementation fg.deobf("curse.maven:dawncraft-mobs-831982:5170829")
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 

@@ -3,7 +3,7 @@ package com.afunproject.dawncraft.integration.journeymap.network;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.smileycorp.atlas.api.network.SimpleAbstractMessage;
 
 public class AddWaypointMessage extends SimpleAbstractMessage {
@@ -38,7 +38,7 @@ public class AddWaypointMessage extends SimpleAbstractMessage {
 	}
 
 	public String getStructure() {
-		return new TranslatableComponent(structure).getString();
+		return Component.translatable(structure).getString();
 	}
 
 }

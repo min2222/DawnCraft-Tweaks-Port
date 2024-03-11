@@ -2,11 +2,11 @@ package com.afunproject.dawncraft.network;
 
 import com.afunproject.dawncraft.Constants;
 import com.afunproject.dawncraft.client.ClientHandler;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.smileycorp.atlas.api.network.NetworkUtils;
 import net.smileycorp.atlas.api.network.SimpleIntMessage;
 import net.smileycorp.atlas.api.network.SimpleStringMessage;
 
