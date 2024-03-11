@@ -8,7 +8,7 @@ import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import tictim.paraglider.item.ParagliderItem;
+import tictim.paraglider.contents.item.ParagliderItem;
 
 public class EpicFightParagliderEvents {
 

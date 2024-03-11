@@ -4,6 +4,7 @@ import com.afunproject.dawncraft.dungeon.block.entity.RedstoneActivatorBlockEnti
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 
 public class RedstoneActivatorMenu extends AbstractContainerMenu {
 
@@ -26,4 +27,8 @@ public class RedstoneActivatorMenu extends AbstractContainerMenu {
 		return player.isCreative() && blockEntity != null;
 	}
 
+	@Override
+	public ItemStack quickMoveStack(Player p_38941_, int p_38942_) {
+		return null;
+	}
 }

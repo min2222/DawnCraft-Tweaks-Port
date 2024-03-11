@@ -2,6 +2,7 @@ package com.afunproject.dawncraft.dungeon.block.entity.base;
 
 import com.afunproject.dawncraft.Constants;
 import com.afunproject.dawncraft.dungeon.block.entity.interfaces.Disguisable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +13,7 @@ public abstract class CamouflagedTriggerBlockEntity extends TriggerBlockEntityBa
 
 	protected ResourceLocation texture = Constants.loc("forest_brick");
 
-	public CamouflagedTriggerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	public CamouflagedTriggerBlockEntity(BlockEntityType<? extends TriggerBlockEntityBase> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 

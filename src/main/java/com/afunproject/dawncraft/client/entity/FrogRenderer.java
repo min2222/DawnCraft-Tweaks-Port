@@ -1,6 +1,7 @@
 package com.afunproject.dawncraft.client.entity;
 
 import com.afunproject.dawncraft.Constants;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -26,7 +27,7 @@ public class FrogRenderer extends LivingEntityRenderer<LivingEntity, FrogModel> 
 
 	public static void init() {
 		Minecraft mc = Minecraft.getInstance();
-		Context ctx = new Context(mc.getEntityRenderDispatcher(), mc.getItemRenderer(), mc.getResourceManager(), mc.getEntityModels(), mc.font);
+		Context ctx = new Context(mc.getEntityRenderDispatcher(), mc.getItemRenderer(), mc.getBlockRenderer(), mc.getEntityRenderDispatcher().getItemInHandRenderer(), mc.getResourceManager(), mc.getEntityModels(), mc.font);
 		INSTANCE = new FrogRenderer(ctx);
 	}
 

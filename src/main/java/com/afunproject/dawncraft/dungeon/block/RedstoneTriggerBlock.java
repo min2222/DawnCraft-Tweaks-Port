@@ -1,9 +1,13 @@
 package com.afunproject.dawncraft.dungeon.block;
 
+import java.util.Optional;
+
 import com.afunproject.dawncraft.dungeon.block.entity.DungeonBlockEntities;
 import com.afunproject.dawncraft.dungeon.block.entity.RedstoneTriggerBlockEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -14,9 +18,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-
-import java.util.Optional;
-import java.util.Random;
 
 public class RedstoneTriggerBlock extends Block implements EntityBlock {
 
@@ -55,7 +56,7 @@ public class RedstoneTriggerBlock extends Block implements EntityBlock {
 	}
 
 	@Override
-	public void tick(BlockState p_55661_, ServerLevel p_55662_, BlockPos p_55663_, Random p_55664_) {
+	public void tick(BlockState p_55661_, ServerLevel p_55662_, BlockPos p_55663_, RandomSource p_55664_) {
 		if (p_55661_.getValue(POWERED) && !p_55662_.hasNeighborSignal(p_55663_)) {
 			p_55662_.setBlock(p_55663_, p_55661_.cycle(POWERED), 2);
 		}

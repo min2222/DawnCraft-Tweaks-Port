@@ -1,12 +1,16 @@
 package com.afunproject.dawncraft.dungeon.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.afunproject.dawncraft.CreativeTabs;
 import com.afunproject.dawncraft.dungeon.KeyColour;
 import com.afunproject.dawncraft.dungeon.block.LockedBlock;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -16,9 +20,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour.BlockStateBase;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class KeyItem extends Item implements AdventureItem {
 
@@ -36,13 +37,13 @@ public class KeyItem extends Item implements AdventureItem {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
 		LockItem lock = DungeonItems.getLock(colour);
-		lines.add(new TranslatableComponent("tooltip.dawncraft.key_0", lock.getName(new ItemStack(lock))));
-		lines.add(new TranslatableComponent("tooltip.dawncraft.key_1"));
+		lines.add(Component.translatable("tooltip.dawncraft.key_0", lock.getName(new ItemStack(lock))));
+		lines.add(Component.translatable("tooltip.dawncraft.key_1"));
 	}
 
 	@Override
-	public Component getName(ItemStack stack) {
-		BaseComponent component = ((BaseComponent)super.getName(stack));
+	public MutableComponent getName(ItemStack stack) {
+		MutableComponent component = ((MutableComponent)super.getName(stack));
 		return component.withStyle(component.getStyle().withColor(colour.getColour()));
 	}
 

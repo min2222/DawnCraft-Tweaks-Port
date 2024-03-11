@@ -17,7 +17,7 @@ public class ModUtils {
 		Block block = oldState.getBlock();
 		if (oldState.getMaterial() == Material.WATER) return true;
 		else if (block instanceof SimpleWaterloggedBlock) return (oldState.getValue(BlockStateProperties.WATERLOGGED));
-		return oldState.getFluidState().m_205070_(FluidTags.WATER);
+		return oldState.getFluidState().is(FluidTags.WATER);
 	}
 
 	public static String getPosString(BlockPos pos) {

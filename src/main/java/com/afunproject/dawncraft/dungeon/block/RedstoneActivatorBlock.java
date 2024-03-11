@@ -1,12 +1,18 @@
 package com.afunproject.dawncraft.dungeon.block;
 
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import com.afunproject.dawncraft.dungeon.block.entity.DungeonBlockEntities;
 import com.afunproject.dawncraft.dungeon.block.entity.RedstoneActivatorBlockEntity;
 import com.afunproject.dawncraft.dungeon.item.DungeonItems;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -24,10 +30,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.Random;
 
 public class RedstoneActivatorBlock extends Block implements EntityBlock {
 
@@ -64,7 +66,7 @@ public class RedstoneActivatorBlock extends Block implements EntityBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 		if (state.getValue(POWERED)) {
 			level.setBlock(pos, state.cycle(POWERED), 3);
 			level.updateNeighborsAt(pos, this);
@@ -88,10 +90,10 @@ public class RedstoneActivatorBlock extends Block implements EntityBlock {
 			RedstoneActivatorBlockEntity entity = optional.get();
 			if (entity.getSignalLength() < 1) {
 				entity.setSignalLength(1);
-				player.sendMessage(new TranslatableComponent("message.dawncraft.singlepulse"), null);
+				player.sendSystemMessage(Component.translatable("message.dawncraft.singlepulse"));
 			} else {
 				entity.setSignalLength(0);
-				player.sendMessage(new TranslatableComponent("message.dawncraft.toggle"), null);
+				player.sendSystemMessage(Component.translatable("message.dawncraft.toggle"));
 			}
 		}
 		return InteractionResult.SUCCESS;

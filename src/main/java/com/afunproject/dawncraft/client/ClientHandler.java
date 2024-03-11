@@ -1,21 +1,22 @@
 package com.afunproject.dawncraft.client;
 
+import java.util.List;
+
 import com.afunproject.dawncraft.integration.epicfight.client.EpicFightClientEvents;
 import com.afunproject.dawncraft.integration.journeymap.client.JourneyMapPlugin;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.InputConstants.Key;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.ModList;
-
-import java.util.List;
 
 public class ClientHandler {
 
@@ -31,13 +32,13 @@ public class ClientHandler {
 
 	public static void displayMessage(String message) {
 		Minecraft mc = Minecraft.getInstance();
-		MutableComponent component = new TranslatableComponent(message).withStyle(ChatFormatting.AQUA);
+		MutableComponent component = Component.translatable(message).withStyle(ChatFormatting.AQUA);
 		mc.gui.setOverlayMessage(component, false);
 	}
 
 	public static void displayAnimalMessage(int count) {
 		Minecraft mc = Minecraft.getInstance();
-		MutableComponent component = new TranslatableComponent("message.dawncraft.animal", count).withStyle(Style.EMPTY.applyFormat(ChatFormatting.DARK_GREEN).withBold(true));
+		MutableComponent component = Component.translatable("message.dawncraft.animal", count).withStyle(Style.EMPTY.applyFormat(ChatFormatting.DARK_GREEN).withBold(true));
 		mc.gui.setOverlayMessage(component, false);
 	}
 

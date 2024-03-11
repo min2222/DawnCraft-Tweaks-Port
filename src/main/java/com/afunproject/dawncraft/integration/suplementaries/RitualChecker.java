@@ -1,10 +1,14 @@
 package com.afunproject.dawncraft.integration.suplementaries;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.afunproject.dawncraft.dungeon.item.RebirthStaffItem;
 import com.afunproject.dawncraft.entities.RitualItemEntity;
 import com.google.common.collect.Lists;
+
 import net.mehvahdjukaar.supplementaries.common.block.tiles.PedestalBlockTile;
-import net.mehvahdjukaar.supplementaries.setup.ModRegistry;
+import net.mehvahdjukaar.supplementaries.reg.ModRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -16,9 +20,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.List;
-import java.util.Optional;
 
 public class RitualChecker {
 

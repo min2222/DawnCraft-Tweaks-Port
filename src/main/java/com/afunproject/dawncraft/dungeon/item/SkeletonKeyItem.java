@@ -1,10 +1,14 @@
 package com.afunproject.dawncraft.dungeon.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.afunproject.dawncraft.CreativeTabs;
 import com.afunproject.dawncraft.dungeon.block.LockedBlock;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -16,9 +20,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour.BlockStateBase;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class SkeletonKeyItem extends Item implements AdventureItem {
 
 	public SkeletonKeyItem() {
@@ -27,8 +28,8 @@ public class SkeletonKeyItem extends Item implements AdventureItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
-		lines.add(new TranslatableComponent("tooltip.dawncraft.skeleton_key_0"));
-		lines.add(new TranslatableComponent("tooltip.dawncraft.skeleton_key_1"));
+		lines.add(Component.translatable("tooltip.dawncraft.skeleton_key_0"));
+		lines.add(Component.translatable("tooltip.dawncraft.skeleton_key_1"));
 	}
 
 	@Override

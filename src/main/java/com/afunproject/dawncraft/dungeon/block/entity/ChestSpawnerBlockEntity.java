@@ -1,16 +1,18 @@
 package com.afunproject.dawncraft.dungeon.block.entity;
 
+import java.util.Optional;
+
 import com.afunproject.dawncraft.Constants;
 import com.afunproject.dawncraft.ModUtils;
 import com.afunproject.dawncraft.dungeon.block.ChestSpawnerBlock;
 import com.afunproject.dawncraft.dungeon.block.entity.base.CamouflagedFunctionalBlockEntity;
 import com.afunproject.dawncraft.dungeon.block.entity.base.TriggerBlockEntityBase;
 import com.afunproject.dawncraft.dungeon.block.entity.interfaces.SingleUse;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
@@ -25,8 +27,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-
-import java.util.Optional;
 
 public class ChestSpawnerBlockEntity extends CamouflagedFunctionalBlockEntity implements Container, MenuProvider, SingleUse {
 
@@ -83,7 +83,7 @@ public class ChestSpawnerBlockEntity extends CamouflagedFunctionalBlockEntity im
 
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent("tile." + Constants.MODID + ".chest_spawner");
+		return Component.translatable("tile." + Constants.MODID + ".chest_spawner");
 	}
 
 	@Override

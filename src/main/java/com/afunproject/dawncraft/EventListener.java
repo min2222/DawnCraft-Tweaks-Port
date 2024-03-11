@@ -1,6 +1,15 @@
 package com.afunproject.dawncraft;
 
-import com.afunproject.dawncraft.capability.*;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
+
+import com.afunproject.dawncraft.capability.DCCapabilities;
+import com.afunproject.dawncraft.capability.Invader;
+import com.afunproject.dawncraft.capability.Invasion;
+import com.afunproject.dawncraft.capability.RestrictBlock;
+import com.afunproject.dawncraft.capability.SageQuestTracker;
+import com.afunproject.dawncraft.capability.Toasts;
 import com.afunproject.dawncraft.dungeon.item.DungeonItems;
 import com.afunproject.dawncraft.dungeon.item.RebirthStaffItem;
 import com.afunproject.dawncraft.effects.DawnCraftEffects;
@@ -11,6 +20,7 @@ import com.afunproject.dawncraft.integration.epicfight.EpicFightCompat;
 import com.afunproject.dawncraft.integration.ironspellbooks.IronsSpellbooksCompat;
 import com.afunproject.dawncraft.integration.suplementaries.RitualChecker;
 import com.google.common.collect.Lists;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -40,7 +50,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -52,10 +62,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Consumer;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD)
 public class EventListener {
@@ -75,9 +81,9 @@ public class EventListener {
 	}
 
 	@SubscribeEvent
-	public void entityJoinWorld(EntityJoinWorldEvent event) {
+	public void entityJoinWorld(EntityJoinLevelEvent event) {
 		//scale boss hp and damage based on players nearby
-		if (event.getEntity().getType().m_204039_(DCEntityTags.BOSSES)) {
+		if (event.getEntity().getType().is(DCEntityTags.BOSSES)) {
 			Mob boss = (Mob) event.getEntity();
 			int players = 0;
 			for (Player player : boss.level.players()) {
@@ -121,8 +127,8 @@ public class EventListener {
 
 	@SubscribeEvent
 	public void playerRespawn(PlayerRespawnEvent event) {
-		if (event.getPlayer() instanceof ServerPlayer) {
-			ServerPlayer player = (ServerPlayer) event.getPlayer();
+		if (event.getEntity() instanceof ServerPlayer) {
+			ServerPlayer player = (ServerPlayer) event.getEntity();
 			if (!player.getAbilities().mayBuild) player.setGameMode(GameType.SURVIVAL);
 		}
 	}
@@ -130,7 +136,7 @@ public class EventListener {
 	@SubscribeEvent
 	public void playerClone(PlayerEvent.Clone event) {
 		Player original = event.getOriginal();
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		original.reviveCaps();
 		//clone sage quest capabilities
 		LazyOptional<SageQuestTracker> soptionalOld = original.getCapability(DCCapabilities.SAGE_QUEST_TRACKER);
@@ -150,7 +156,7 @@ public class EventListener {
 
 	@SubscribeEvent
 	public void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-		Level level = event.getWorld();
+		Level level = event.getLevel();
 		if (level.isClientSide) return;
 		ItemStack stack = event.getItemStack();
 		BlockPos pos = event.getPos();
@@ -166,7 +172,7 @@ public class EventListener {
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void livingHurt(LivingDamageEvent event) {
 		if (event.isCanceled()) return;
-		LivingEntity entity = event.getEntityLiving();
+		LivingEntity entity = event.getEntity();
 		DamageSource source = event.getSource();
 		if (entity.level.isClientSide |! (source.getEntity() instanceof LivingEntity)) return;
 			LivingEntity attacker = (LivingEntity) source.getEntity();
@@ -187,7 +193,7 @@ public class EventListener {
 		if (event.getEntity() instanceof Player) {
 			DamageSource source = event.getSource();
 			if (source.getEntity() != null) {
-				if (source.getEntity().getType().m_204039_(DCEntityTags.BOSSES)) {
+				if (source.getEntity().getType().is(DCEntityTags.BOSSES)) {
 					LivingEntity boss = (LivingEntity) source.getEntity();
 					boss.heal(boss.getMaxHealth() * 0.25f);
 				}
@@ -205,7 +211,7 @@ public class EventListener {
 		Level level = event.getEntity().level;
 		if (!level.isClientSide) {
 			if (level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-				if (ModList.get().isLoaded("apotheosis")) ApotheosisCompat.fixNBT(event.getEntityLiving());
+				if (ModList.get().isLoaded("apotheosis")) ApotheosisCompat.fixNBT(event.getEntity());
 			}
 		}
 	}
@@ -213,15 +219,15 @@ public class EventListener {
 	@SubscribeEvent
 	public void rightClick(PlayerInteractEvent.RightClickItem event) {
 		if (ModList.get().isLoaded("irons_spellbooks")) if (IronsSpellbooksCompat.isSpellBook(event.getItemStack())) {
-			event.getEntityLiving().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 3));
+			event.getEntity().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 3));
 		}
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void playerTick(LivingEvent.LivingVisibilityEvent event) {
 		Entity entity = event.getLookingEntity();
-		if (!event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).is(DungeonItems.MASK_OF_ATHORA.get())) return;
-		if (entity.getType().m_204039_(DCEntityTags.BYPASSES_MASK_OF_ATHORA)) return;
+		if (!event.getEntity().getItemBySlot(EquipmentSlot.HEAD).is(DungeonItems.MASK_OF_ATHORA.get())) return;
+		if (entity.getType().is(DCEntityTags.BYPASSES_MASK_OF_ATHORA)) return;
 		if (ModList.get().isLoaded("champions")) if (ChampionsIntegration.isChampion(entity)) return;
 		event.modifyVisibility(0);
 	}

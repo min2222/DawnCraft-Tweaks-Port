@@ -1,18 +1,23 @@
 package com.afunproject.dawncraft.dungeon.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.afunproject.dawncraft.CreativeTabs;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class RebirthStaffItem extends Item {
 
@@ -22,7 +27,7 @@ public class RebirthStaffItem extends Item {
 
 	@Override
 	public Component getName(ItemStack stack) {
-		BaseComponent component = ((BaseComponent)super.getName(stack));
+		MutableComponent component = ((MutableComponent)super.getName(stack));
 		return isPowered(stack)? component.withStyle(ChatFormatting.LIGHT_PURPLE) : component;
 	}
 
@@ -30,13 +35,13 @@ public class RebirthStaffItem extends Item {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
 		boolean isPowered = isPowered(stack);
 		String text = "tooltip.dawncraft.rebirth_staff." + (isPowered ? "powered_" : "inert_");
-		lines.add(new TranslatableComponent(text+"0").withStyle(isPowered ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA));
-		lines.add(new TranslatableComponent(text+"1").withStyle(Style.EMPTY.withItalic(true)));
+		lines.add(Component.translatable(text+"0").withStyle(isPowered ? ChatFormatting.LIGHT_PURPLE : ChatFormatting.AQUA));
+		lines.add(Component.translatable(text+"1").withStyle(Style.EMPTY.withItalic(true)));
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			items.add(new ItemStack(this));
 			items.add(createPowered());
 		}

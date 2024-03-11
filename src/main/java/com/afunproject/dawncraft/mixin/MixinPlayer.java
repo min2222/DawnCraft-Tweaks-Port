@@ -1,5 +1,14 @@
 package com.afunproject.dawncraft.mixin;
 
+import java.util.List;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import com.afunproject.dawncraft.DCConfig;
 import com.afunproject.dawncraft.DCItemTags;
 import com.afunproject.dawncraft.capability.DCCapabilities;
@@ -9,6 +18,7 @@ import com.afunproject.dawncraft.effects.DawnCraftEffects;
 import com.afunproject.dawncraft.integration.create.CreateCompat;
 import com.afunproject.dawncraft.integration.curios.CuriosCompat;
 import com.afunproject.dawncraft.integration.sophisticatedbackpacks.SophisticatedBackpacksCompat;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -28,14 +38,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.ModList;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
 
 @Mixin(Player.class)
 public abstract class MixinPlayer extends LivingEntity {
@@ -77,7 +79,7 @@ public abstract class MixinPlayer extends LivingEntity {
 		if (hasEffect(DawnCraftEffects.FRACTURED_SOUL.get())) amplifier += getEffect(DawnCraftEffects.FRACTURED_SOUL.get()).getAmplifier();
 		for (int i = 0; i < items.size(); i++) {
 			ItemStack stack = items.get(i);
-			if (stack.m_204117_(DCItemTags.VALUABLES)) {
+			if (stack.is(DCItemTags.VALUABLES)) {
 				if (level.random.nextInt(8) < amplifier) {
 					ItemStack drop = stack.copy();
 					int count = stack.getCount();

@@ -1,5 +1,7 @@
 package com.afunproject.dawncraft.integration.humancompanions;
 
+import java.util.Random;
+
 import com.afunproject.dawncraft.EventListener;
 import com.afunproject.dawncraft.capability.DCCapabilities;
 import com.afunproject.dawncraft.capability.SpawnTracker;
@@ -8,6 +10,7 @@ import com.afunproject.dawncraft.integration.humancompanions.entities.KnightPlay
 import com.github.justinwon777.humancompanions.entity.Knight;
 import com.github.justinwon777.humancompanions.entity.ai.MoveBackToPatrolGoal;
 import com.github.justinwon777.humancompanions.entity.ai.PatrolGoal;
+
 import net.mcreator.simplemobs.init.SimpleMobsModItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,12 +20,10 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import yesman.epicfight.world.item.EpicFightItems;
-
-import java.util.Random;
 
 public class HCEvents {
 
@@ -33,8 +34,8 @@ public class HCEvents {
 	}
 
 	@SubscribeEvent
-	public void entityJoinWorld(EntityJoinWorldEvent event) {
-		Level level = event.getWorld();
+	public void entityJoinWorld(EntityJoinLevelEvent event) {
+		Level level = event.getLevel();
 		if (event.getEntity().getClass() == Knight.class && level instanceof ServerLevel) {
 			Knight entity = (Knight) event.getEntity();
 			LazyOptional<SpawnTracker> optional = entity.getCapability(DCCapabilities.SPAWN_TRACKER);

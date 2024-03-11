@@ -1,10 +1,9 @@
 package com.afunproject.dawncraft.entities.ai;
 
+import java.util.List;
+
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.FollowMobGoal;
-import net.smileycorp.atlas.api.util.Func;
-
-import java.util.List;
 
 public class FollowMobPredicateGoal extends FollowMobGoal {
 
@@ -17,7 +16,7 @@ public class FollowMobPredicateGoal extends FollowMobGoal {
 
 	@Override
 	public boolean canUse() {
-		List<? extends Mob> list = mob.level.getEntitiesOfClass(target, mob.getBoundingBox().inflate(areaSize), Func::True);
+		List<? extends Mob> list = mob.level.getEntitiesOfClass(target, mob.getBoundingBox().inflate(areaSize), t -> true);
 		if (!list.isEmpty()) {
 			for(Mob mob : list) {
 				if (!mob.isInvisible()) {

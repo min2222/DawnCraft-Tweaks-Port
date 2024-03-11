@@ -1,21 +1,26 @@
 package com.afunproject.dawncraft.dungeon.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.afunproject.dawncraft.CreativeTabs;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class CrystallizedXPItem extends Item {
     
@@ -41,12 +46,12 @@ public class CrystallizedXPItem extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
         int value = getValue(stack);
         if (value <= 0) return;
-        lines.add(new TranslatableComponent("tooltip.dawncraft.crystallized_xp", value).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xAAED52))));
+        lines.add(Component.translatable("tooltip.dawncraft.crystallized_xp", value).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xAAED52))));
     }
     
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-        if (allowdedIn(tab)) {
+        if (allowedIn(tab)) {
             items.add(withValue(1));
             items.add(withValue(5));
             items.add(withValue(10));

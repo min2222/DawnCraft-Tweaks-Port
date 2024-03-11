@@ -1,7 +1,10 @@
 package com.afunproject.dawncraft.dungeon.block.entity;
 
+import java.util.stream.Stream;
+
 import com.afunproject.dawncraft.Constants;
 import com.afunproject.dawncraft.dungeon.block.DungeonBlocks;
+
 import net.minecraft.Util;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.level.block.Block;
@@ -12,12 +15,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class DungeonBlockEntities {
 
-	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Constants.MODID);
+	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Constants.MODID);
 
 	public static final RegistryObject<BlockEntityType<DungeonDoorBlockEntity>> DUNGEON_DOOR = register("dungeon_door", DungeonDoorBlockEntity::new,
 			DungeonBlocks.FIRE_DOOR, DungeonBlocks.RUST_DOOR, DungeonBlocks.SAND_DOOR, DungeonBlocks.STONE_DOOR, DungeonBlocks.WOOD_DOOR);

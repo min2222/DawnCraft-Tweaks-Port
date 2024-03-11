@@ -1,14 +1,18 @@
 package com.afunproject.dawncraft.invasion;
 
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,8 +32,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.smileycorp.atlas.api.util.DirectionUtils;
 
-import java.util.List;
-
 public class InvasionEntry {
 
 	protected final String name;
@@ -45,7 +47,7 @@ public class InvasionEntry {
 		for (Tag value : tag.getList("tag", 8)) {
 			try {
 				ResourceLocation loc = new ResourceLocation(((StringTag)value).getAsString());
-				entities.add(ForgeRegistries.ENTITIES.getValue(loc));
+				entities.add(ForgeRegistries.ENTITY_TYPES.getValue(loc));
 			} catch (Exception e) {}
 		}
 	}
@@ -53,7 +55,7 @@ public class InvasionEntry {
 	public void spawnEntities(Player player) {
 		Level level = player.level;
 		for (EntityType<?> type : entities) {
-			Vec3 dir = DirectionUtils.getRandomDirectionVecXZ(player.getRandom());
+			Vec3 dir = DirectionUtils.getRandomDirectionVecXZ(ThreadLocalRandom.current());
 			BlockPos pos = DirectionUtils.getClosestLoadedPos(level, player.blockPosition(), dir, 50);
 			Mob entity = (Mob) type.create(level);
 			entity.setPos(pos.getX(), pos.getY(), pos.getZ());
@@ -70,7 +72,7 @@ public class InvasionEntry {
 			entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, 1000));
 			Vec3 sound = player.position().add(dir);
 			level.playSound(null, sound.x, sound.y, sound.z, SoundEvents.PORTAL_TRAVEL, SoundSource.HOSTILE, 1f, level.random.nextFloat());
-			player.displayClientMessage(new TranslatableComponent("message.dawncraft.invasion", name).setStyle(Style.EMPTY.withColor(ChatFormatting.RED).withBold(true)), true);
+			player.displayClientMessage(Component.translatable("message.dawncraft.invasion", name).setStyle(Style.EMPTY.withColor(ChatFormatting.RED).withBold(true)), true);
 		}
 	}
 
@@ -78,7 +80,7 @@ public class InvasionEntry {
 		CompoundTag tag =  new CompoundTag();
 		tag.putString("name", name);
 		ListTag list = new ListTag();
-		for (EntityType<?> type : entities) list.add(StringTag.valueOf(type.getRegistryName().toString()));
+		for (EntityType<?> type : entities) list.add(StringTag.valueOf(ForgeRegistries.ENTITY_TYPES.getKey(type).toString()));
 		tag.put("entities", list);
 		return tag;
 	}

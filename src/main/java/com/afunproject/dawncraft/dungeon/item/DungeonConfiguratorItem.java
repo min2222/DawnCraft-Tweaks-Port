@@ -1,18 +1,23 @@
 package com.afunproject.dawncraft.dungeon.item;
 
+import java.util.List;
+import java.util.Locale;
+
+import javax.annotation.Nullable;
+
 import com.afunproject.dawncraft.CreativeTabs;
 import com.afunproject.dawncraft.ModUtils;
 import com.afunproject.dawncraft.dungeon.block.entity.interfaces.DungeonTrigger;
 import com.afunproject.dawncraft.dungeon.block.entity.interfaces.Functional;
 import com.afunproject.dawncraft.dungeon.block.entity.interfaces.SingleUse;
 import com.afunproject.dawncraft.network.DCNetworkHandler;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,10 +35,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkDirection;
 import net.smileycorp.atlas.api.network.SimpleStringMessage;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Locale;
-
 public class DungeonConfiguratorItem extends Item {
 
 	public DungeonConfiguratorItem() {
@@ -42,7 +43,7 @@ public class DungeonConfiguratorItem extends Item {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack stack = new ItemStack(this);
 			setMode(stack, ConfiguratorMode.LINK_FUNCTIONAL);
 			items.add(stack);
@@ -52,14 +53,14 @@ public class DungeonConfiguratorItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
 		ConfiguratorMode mode = ConfiguratorMode.getmode(stack);
-		lines.add(new TranslatableComponent(mode.getModeMessage()).withStyle(ChatFormatting.AQUA));
+		lines.add(Component.translatable(mode.getModeMessage()).withStyle(ChatFormatting.AQUA));
 		lines.add(mode.getTooltip());
-		lines.add(new TranslatableComponent("tooltip.dawncraft.configuratormode").withStyle(ChatFormatting.YELLOW));
+		lines.add(Component.translatable("tooltip.dawncraft.configuratormode").withStyle(ChatFormatting.YELLOW));
 	}
 
 	@Override
 	public Component getName(ItemStack stack) {
-		return ((BaseComponent)super.getName(stack)).withStyle(ChatFormatting.LIGHT_PURPLE);
+		return ((MutableComponent)super.getName(stack)).withStyle(ChatFormatting.LIGHT_PURPLE);
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class DungeonConfiguratorItem extends Item {
 					DCNetworkHandler.NETWORK_INSTANCE.sendTo(new SimpleStringMessage(mode.getModeMessage()), ((ServerPlayer) player).connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 				}
 			}
-		} else player.sendMessage(new TranslatableComponent("message.dawncraft.creative_required"), null);
+		} else player.sendSystemMessage(Component.translatable("message.dawncraft.creative_required"));
 		return super.use(level, player, hand);
 	}
 
@@ -97,14 +98,14 @@ public class DungeonConfiguratorItem extends Item {
 				case LINK_FUNCTIONAL:
 					if (block_entity instanceof Functional) {
 						if (pos != null) {
-							player.sendMessage(new TranslatableComponent("message.dawncraft.select_functional_block", ModUtils.getPosString(pos)), null);
+							player.sendSystemMessage(Component.translatable("message.dawncraft.select_functional_block", ModUtils.getPosString(pos)));
 							setSelectedBlock(stack, pos);
 						}
 					}
 					else if (block_entity instanceof DungeonTrigger) {
 						BlockPos linked_pos = getSelectedPos(stack);
 						if (linked_pos != null) {
-							player.sendMessage(new TranslatableComponent("message.dawncraft.link_triggerable_block", ModUtils.getPosString(linked_pos), ModUtils.getPosString(pos)), null);
+							player.sendSystemMessage(Component.translatable("message.dawncraft.link_triggerable_block", ModUtils.getPosString(linked_pos), ModUtils.getPosString(pos)));
 							((DungeonTrigger) block_entity).addLinkedBlock(level, linked_pos);
 							setSelectedBlock(stack, null);
 						}
@@ -113,14 +114,14 @@ public class DungeonConfiguratorItem extends Item {
 				case UNLINK_FUNCTIONAL:
 					if (block_entity instanceof Functional) {
 						if (pos != null) {
-							player.sendMessage(new TranslatableComponent("message.dawncraft.select_functional_block", ModUtils.getPosString(pos)), null);
+							player.sendSystemMessage(Component.translatable("message.dawncraft.select_functional_block", ModUtils.getPosString(pos)));
 							setSelectedBlock(stack, pos);
 						}
 					}
 					else if (block_entity instanceof DungeonTrigger) {
 						BlockPos linked_pos = getSelectedPos(stack);
 						if (linked_pos != null) {
-							player.sendMessage(new TranslatableComponent("message.dawncraft.unlink_triggerable_block", ModUtils.getPosString(linked_pos), ModUtils.getPosString(pos)), null);
+							player.sendSystemMessage(Component.translatable("message.dawncraft.unlink_triggerable_block", ModUtils.getPosString(linked_pos), ModUtils.getPosString(pos)));
 							((DungeonTrigger) block_entity).removeLinkedBlock(linked_pos);
 							setSelectedBlock(stack, null);
 						}
@@ -130,7 +131,7 @@ public class DungeonConfiguratorItem extends Item {
 					if (block_entity instanceof SingleUse) {
 						if (((SingleUse)block_entity).hasBeenUsed()) {
 							((SingleUse)block_entity).reset();
-							player.sendMessage(new TranslatableComponent("message.dawncraft.reset_functional_block", ModUtils.getPosString(pos)), null);
+							player.sendSystemMessage(Component.translatable("message.dawncraft.reset_functional_block", ModUtils.getPosString(pos)));
 						}
 					}
 					break;
@@ -138,12 +139,12 @@ public class DungeonConfiguratorItem extends Item {
 					if (state != null) state.rotate(level, pos, Rotation.CLOCKWISE_90);
 					break;
 				default:
-					player.sendMessage(new TranslatableComponent("message.dawncraft.no_mode", mode), null);
+					player.sendSystemMessage(Component.translatable("message.dawncraft.no_mode", mode));
 					break;
 				}
 			}
 			return InteractionResult.SUCCESS;
-		} else player.sendMessage(new TranslatableComponent("message.dawncraft.creative_required"), null);
+		} else player.sendSystemMessage(Component.translatable("message.dawncraft.creative_required"));
 		return super.useOn(ctx);
 	}
 
@@ -188,8 +189,8 @@ public class DungeonConfiguratorItem extends Item {
 			return "configuratormode.dawncraft." + toString().toLowerCase(Locale.US);
 		}
 
-		public TranslatableComponent getTooltip() {
-			return new TranslatableComponent("tooltip.dawncraft.configuratormode." + toString().toLowerCase(Locale.US));
+		public MutableComponent getTooltip() {
+			return Component.translatable("tooltip.dawncraft.configuratormode." + toString().toLowerCase(Locale.US));
 		}
 
 		public static ConfiguratorMode getmode(ItemStack stack) {

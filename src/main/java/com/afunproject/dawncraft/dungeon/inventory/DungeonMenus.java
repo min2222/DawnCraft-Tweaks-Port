@@ -1,6 +1,7 @@
 package com.afunproject.dawncraft.dungeon.inventory;
 
 import com.afunproject.dawncraft.Constants;
+
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -11,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class DungeonMenus {
 
-	public static DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, Constants.MODID);
+	public static DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Constants.MODID);
 
 	/*public static final RegistryObject<MenuType<RedstoneActivatorMenu>> REDSTONE_ACTIVATOR_MENU = register("redstone_activator",
 			(id, inv, buf) -> new RedstoneActivatorMenu(id));*/
