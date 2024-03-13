@@ -26,7 +26,7 @@ repositories {
 
 version = '1.19.2-1.2.12'
 group = 'com.afunproject.dawncraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'DawnCraft-Tweaks'
+archivesBaseName = 'dawncraft-tweaks'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -95,7 +95,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.3.0'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.3.8'
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation fg.deobf('curse.maven:atlaslib-463826:4088354')
 	implementation fg.deobf('curse.maven:epicfight-405076:5148981')
@@ -116,6 +116,9 @@ dependencies {
     implementation fg.deobf("curse.maven:create-328085:4835190")
     implementation fg.deobf("curse.maven:journeymap-32274:4532924")
     implementation fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:5144911")
+    implementation fg.deobf("curse.maven:caelus-308989:3929284")
+    implementation fg.deobf("curse.maven:playeranimator-658587:4418149")
+    implementation fg.deobf("curse.maven:the-impossible-library-661115:4742104")
     
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
