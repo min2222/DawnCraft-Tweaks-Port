@@ -10,6 +10,7 @@ import com.afunproject.dawncraft.network.NetworkUtils;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.datafixers.util.Pair;
 
@@ -25,7 +26,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,24 +40,28 @@ public class JourneyMapEvents {
 		MinecraftForge.EVENT_BUS.register(new JourneyMapEvents());
 		NetworkUtils.registerMessage(DCNetworkHandler.NETWORK_INSTANCE, 5, AddWaypointMessage.class, JourneyMapEvents::receivePacket);
 	}
+	
+	private static final DynamicCommandExceptionType ERROR_STRUCTURE_INVALID = new DynamicCommandExceptionType((p_207534_) -> {
+		return Component.translatable("commands.locate.structure.invalid", p_207534_);
+	});
 
 	@SubscribeEvent
 	public void registerSubCommands(DCSubCommandsEvent event) {
 		event.addSubCommand(Commands.literal("addWaypoint").requires(stack -> stack.hasPermission(2))
-				.then(Commands.argument("player", EntityArgument.players()).then(Commands.argument("structure", ResourceOrTagLocationArgument.m_210968_(Registry.CONFIGURED_FEATURE_REGISTRY))
+				.then(Commands.argument("player", EntityArgument.players()).then(Commands.argument("structure", ResourceOrTagLocationArgument.resourceOrTag(Registry.CONFIGURED_FEATURE_REGISTRY))
 						.then(Commands.argument("name", StringArgumentType.string()).executes(this::addWaypoint)))));
 	}
 
 	private int addWaypoint(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
-		ResourceOrTagLocationArgument.Result<ConfiguredFeature<?, ?>> result = ResourceOrTagLocationArgument.m_210970_(ctx, "structure");
+		ResourceOrTagLocationArgument.Result<Structure> result = ResourceOrTagLocationArgument.getRegistryType(ctx, "structure", Registry.STRUCTURE_REGISTRY, ERROR_STRUCTURE_INVALID);
 		ServerLevel level = ctx.getSource().getLevel();
-		Registry<ConfiguredFeature<?, ?>> registry = level.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
-		HolderSet<ConfiguredFeature<?, ?>> holderset = result.m_207418_().map(rk ->
-				registry.m_203636_(rk).map(HolderSet::m_205809_), registry::m_203431_)
-				.orElseThrow(new SimpleCommandExceptionType(Component.translatable("commands.locate.invalid", result.m_207276_()))::create);
-		Pair<BlockPos, Holder<ConfiguredFeature<?, ?>>> pair = level.getChunkSource().getGenerator()
-				.m_207970_(level, holderset, new BlockPos(ctx.getSource().getPosition()), 100, false);
-		if (pair == null) throw new SimpleCommandExceptionType(Component.translatable("commands.locate.failed", result.m_207276_())).create();
+		Registry<Structure> registry = level.registryAccess().registryOrThrow(Registry.STRUCTURE_REGISTRY);
+		HolderSet<Structure> holderset = result.unwrap().map(rk ->
+				registry.getHolder(rk).map(HolderSet::direct), registry::getTag)
+				.orElseThrow(new SimpleCommandExceptionType(Component.translatable("commands.locate.invalid", result.asPrintable()))::create);
+		Pair<BlockPos, Holder<Structure>> pair = level.getChunkSource().getGenerator()
+				.findNearestMapStructure(level, holderset, new BlockPos(ctx.getSource().getPosition()), 100, false);
+		if (pair == null) throw new SimpleCommandExceptionType(Component.translatable("commands.locate.failed", result.asPrintable())).create();
 		for (ServerPlayer player : EntityArgument.getPlayers(ctx, "player"))
 			addWaypoint(pair.getFirst(), StringArgumentType.getString(ctx, "name"), player);
 		return 1;

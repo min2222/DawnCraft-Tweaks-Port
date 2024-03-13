@@ -200,7 +200,7 @@ public class SimpleMobsEvents {
 			int time = player.getRandom().nextInt(30000) + 6000;
 			optional.resolve().get().setNextSpawn(time);
 			player.level.playSound(null, player.position().x, player.position().y, player.position().z, SoundEvents.ENDER_DRAGON_AMBIENT, SoundSource.HOSTILE, 1f, player.level.random.nextFloat());
-			player.sendMessage(new TranslatableComponent("message.dawncraft.invasions_enabled_0").withStyle(ChatFormatting.RED), null);
+			player.sendMessage(Component.translatable("message.dawncraft.invasions_enabled_0").withStyle(ChatFormatting.RED), null);
 		}
 		return 0;
 	}

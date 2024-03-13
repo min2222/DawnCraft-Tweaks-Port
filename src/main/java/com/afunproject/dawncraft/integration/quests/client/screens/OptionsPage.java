@@ -1,13 +1,14 @@
 package com.afunproject.dawncraft.integration.quests.client.screens;
 
+import java.util.List;
+
 import com.feywild.quest_giver.screen.button.QuestButtonSmall;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.TranslatableComponent;
-
-import java.util.List;
+import net.minecraft.network.chat.Component;
 
 public class OptionsPage implements Page {
 
@@ -16,8 +17,8 @@ public class OptionsPage implements Page {
 
 	public OptionsPage(QuestScreen screen, List<String> options) {
 		final int position = screen.pages.size();
-		widgets.add(new QuestButtonSmall(380, 230, true, screen.entity.blockPosition(), new TranslatableComponent("text.dawncraft.close"), button -> screen.onClose()));
-		BACK_BUTTON = new QuestButtonSmall(380, 230, true, screen.entity.blockPosition(), new TranslatableComponent("text.dawncraft.back"), button -> {
+		widgets.add(new QuestButtonSmall(380, 230, true, screen.entity.blockPosition(), Component.translatable("text.dawncraft.close"), button -> screen.onClose()));
+		BACK_BUTTON = new QuestButtonSmall(380, 230, true, screen.entity.blockPosition(), Component.translatable("text.dawncraft.back"), button -> {
 			for (int i = screen.pages.size()-1; i > position; i--) screen.pages.remove(i);
 			screen.pageIndex=position;
 		});

@@ -4,11 +4,12 @@ import com.afunproject.dawncraft.integration.quests.client.QuestClientEvents;
 import com.afunproject.dawncraft.integration.quests.custom.QuestEntity;
 import com.afunproject.dawncraft.integration.quests.custom.quests.Quest;
 import com.afunproject.dawncraft.network.DCNetworkHandler;
+import com.afunproject.dawncraft.network.NetworkUtils;
+
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent.Context;
-import net.smileycorp.atlas.api.network.NetworkUtils;
 
 public class QuestNetworkHandler {
 

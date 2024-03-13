@@ -1,5 +1,9 @@
 package com.afunproject.dawncraft.client;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+
 import com.afunproject.dawncraft.Constants;
 import com.afunproject.dawncraft.client.entity.FrogModel;
 import com.afunproject.dawncraft.client.entity.FrogRenderer;
@@ -15,6 +19,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.mojang.math.Transformation;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -30,17 +35,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers;
-import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.model.BakedItemModel;
 import net.minecraftforge.client.model.ItemTextureQuadConverter;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, value = Dist.CLIENT, bus = Bus.MOD)
 public class ClientEventRegister {
@@ -78,8 +79,8 @@ public class ClientEventRegister {
 	}
 
 	@SubscribeEvent
-	public static void onModelBake(ModelBakeEvent event) {
-		Map<ResourceLocation, BakedModel> registry = event.getModelRegistry();
+	public static void onModelBake(ModelEvent.BakingCompleted event) {
+		Map<ResourceLocation, BakedModel> registry = event.getModels();
 		registerGUIModel("cursed_mask", registry);
 	}
 

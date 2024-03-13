@@ -78,7 +78,7 @@ public class QuestEvents {
 		CommandSourceStack source = ctx.getSource();
 		QuestNPC npc = ctx.getArgument("npc", QuestNPC.class);
 		npc.spawnEntity(source.getLevel(), pos);
-		source.sendSuccess(new TranslatableComponent("message.dawncraft.spawn_npc", npc, pos), false);
+		source.sendSuccess(Component.translatable("message.dawncraft.spawn_npc", npc, pos), false);
 	}
 	
 	private static int removeNPCs(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {

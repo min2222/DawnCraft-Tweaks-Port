@@ -12,18 +12,24 @@ import com.afunproject.dawncraft.integration.quests.custom.quests.Quest;
 import com.afunproject.dawncraft.integration.quests.network.OpenQuestMessage;
 import com.feywild.quest_giver.util.RenderEnum;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
+
 import net.mcreator.simplemobs.entity.KorokIntroEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers;
-import net.minecraftforge.client.event.RenderNameplateEvent;
+import net.minecraftforge.client.event.RenderNameTagEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -46,7 +52,7 @@ public class QuestClientEvents {
 		Quest quest = message.getQuest();
 		QuestType type = quest == null ? QuestType.ACKNOWLEDGE : quest.getQuestType(message.getPhase() == 0 ? entity.getQuestPhase() : message.getPhase());
 		String text = message.getMessage() == null ? entity.getQuestText() : message.getMessage();
-		mc.setScreen(new QuestScreen(mob, new TranslatableComponent(text, mc.player), type));
+		mc.setScreen(new QuestScreen(mob, Component.translatable(text, mc.player), type));
 	}
 
 	private static final double MAX_DISTANCE = 64.0;
@@ -54,7 +60,7 @@ public class QuestClientEvents {
 	private static final int X_POS = -8;
 
 	@SubscribeEvent
-	public static void onRenderNamePlate(RenderNameplateEvent event) {
+	public static void onRenderNamePlate(RenderNameTagEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		if (event.getEntity() instanceof QuestEntityBase &!(event.getEntity() instanceof KorokIntroEntity)) {
 			QuestEntityBase entity = (QuestEntityBase) event.getEntity();
@@ -115,8 +121,6 @@ public class QuestClientEvents {
 		bufferbuilder.vertex(matrix, X_POS + 16, Y_POS,	0).uv(1, 0).endVertex();
 		bufferbuilder.vertex(matrix, X_POS, Y_POS, 0).uv(0, 0).endVertex();
 		bufferbuilder.end();
-		BufferUploader.end(bufferbuilder);
+		BufferUploader.drawWithShader(bufferbuilder.end());
 	}
-
-
 }

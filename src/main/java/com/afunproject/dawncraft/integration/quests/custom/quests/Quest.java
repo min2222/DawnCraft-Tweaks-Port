@@ -3,6 +3,7 @@ package com.afunproject.dawncraft.integration.quests.custom.quests;
 import com.afunproject.dawncraft.integration.quests.custom.QuestEntity;
 import com.afunproject.dawncraft.integration.quests.custom.QuestType;
 import com.afunproject.dawncraft.integration.quests.custom.conditions.QuestCondition;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +14,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.maps.MapDecoration.Type;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
@@ -63,10 +64,10 @@ public abstract class Quest {
 	}
 
 	protected final BlockPos findStructure(ServerLevel level, ResourceLocation structure, BlockPos center) {
-		Registry<ConfiguredStructureFeature<?, ?>> r = level.registryAccess().registryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
-		TagKey<ConfiguredStructureFeature<?, ?>> structureTag = TagKey.m_203882_(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY, structure);
+		Registry<Structure> r = level.registryAccess().registryOrThrow(Registry.STRUCTURE_REGISTRY);
+		TagKey<Structure> structureTag = TagKey.create(Registry.STRUCTURE_REGISTRY, structure);
 		return level.getChunkSource().getGenerator()
-				.m_207970_(level, r.m_203431_(structureTag).get(), new BlockPos(center), 100, false).getFirst();
+				.findNearestMapStructure(level, r.getTag(structureTag).get(), new BlockPos(center), 100, false).getFirst();
 	}
 
 	protected final ItemStack createMap(ServerLevel level, BlockPos structure) {

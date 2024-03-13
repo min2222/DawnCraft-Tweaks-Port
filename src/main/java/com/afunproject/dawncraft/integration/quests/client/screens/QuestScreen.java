@@ -19,7 +19,6 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Mob;
 
 public class QuestScreen extends Screen {
@@ -175,8 +174,8 @@ public class QuestScreen extends Screen {
 			};
 		}
 		else if (questType == QuestType.ACKNOWLEDGE) {
-			TranslatableComponent msg1 = getRandomAcknowledgmentMessage();
-			TranslatableComponent msg2 = getRandomAcknowledgmentMessage();
+			MutableComponent msg1 = getRandomAcknowledgmentMessage();
+			MutableComponent msg2 = getRandomAcknowledgmentMessage();
 			while (msg1.equals(msg2)) msg2 = getRandomAcknowledgmentMessage();
 			return new Button[] {new QuestButton(380, 190, true, entity.blockPosition(), msg1, button1 -> {
 				completeQuest(true);
@@ -189,8 +188,8 @@ public class QuestScreen extends Screen {
 			})};
 		}
 		else if (questType == QuestType.DENY) {
-			TranslatableComponent msg1 = getRandomDenyMessage();
-			TranslatableComponent msg2 = getRandomDenyMessage();
+			MutableComponent msg1 = getRandomDenyMessage();
+			MutableComponent msg2 = getRandomDenyMessage();
 			while (msg1.equals(msg2)) msg2 = getRandomDenyMessage();
 			return new Button[] {new QuestButton(380, 190, true, entity.blockPosition(), msg1, button1 -> {
 				completeQuest(false);
@@ -205,20 +204,20 @@ public class QuestScreen extends Screen {
 		return new Button[]{};
 	}
 
-	private TranslatableComponent getRandomAcknowledgmentMessage() {
-		return new TranslatableComponent("text.dawncraft.acknowledge" + (random.nextInt(5)+1));
+	private MutableComponent getRandomAcknowledgmentMessage() {
+		return Component.translatable("text.dawncraft.acknowledge" + (random.nextInt(5)+1));
 	}
 
-	private TranslatableComponent getRandomDenyMessage() {
-		return new TranslatableComponent("text.dawncraft.deny" + (random.nextInt(4)+1));
+	private MutableComponent getRandomDenyMessage() {
+		return Component.translatable("text.dawncraft.deny" + (random.nextInt(4)+1));
 	}
 
-	private TranslatableComponent getRandomAcceptMessage() {
-		return new TranslatableComponent("text.dawncraft.accept" + (random.nextInt(5)+1));
+	private MutableComponent getRandomAcceptMessage() {
+		return Component.translatable("text.dawncraft.accept" + (random.nextInt(5)+1));
 	}
 
-	private TranslatableComponent getRandomDeclineMessage() {
-		return new TranslatableComponent("text.dawncraft.decline" + (random.nextInt(5)+1));
+	private MutableComponent getRandomDeclineMessage() {
+		return Component.translatable("text.dawncraft.decline" + (random.nextInt(5)+1));
 	}
 
 }

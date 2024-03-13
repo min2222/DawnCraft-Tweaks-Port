@@ -1,9 +1,13 @@
 package com.afunproject.dawncraft.integration.quests.custom.entity;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.afunproject.dawncraft.entities.PlayerEntity;
 import com.mojang.authlib.GameProfile;
+
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -11,9 +15,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.server.ServerLifecycleHooks;
-
-import java.util.Optional;
-import java.util.UUID;
 
 public class QuestPlayer extends QuestEntityBase implements PlayerEntity {
 
@@ -40,7 +41,7 @@ public class QuestPlayer extends QuestEntityBase implements PlayerEntity {
 	}
 
 	public void setPlayer(GameProfile profile) {
-		if (profile.getName() != null) setCustomName(new TextComponent(profile.getName()));
+		if (profile.getName() != null) setCustomName(Component.literal(profile.getName()));
 		entityData.set(PLAYER, Optional.of(profile.getId()));
 	}
 
