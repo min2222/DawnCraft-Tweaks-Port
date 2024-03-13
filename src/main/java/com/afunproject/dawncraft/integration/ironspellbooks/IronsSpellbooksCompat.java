@@ -1,12 +1,12 @@
 package com.afunproject.dawncraft.integration.ironspellbooks;
 
-import io.redspace.ironsspellbooks.api.spells.SpellData;
-import io.redspace.ironsspellbooks.capabilities.spellbook.SpellBookData;
+import io.redspace.ironsspellbooks.api.spells.LegacySpellBookData;
+import io.redspace.ironsspellbooks.api.spells.LegacySpellData;
 import net.minecraft.world.item.ItemStack;
 
 public class IronsSpellbooksCompat {
     
     public static boolean isSpellBook(ItemStack stack) {
-        return SpellData.hasSpellData(stack) || SpellBookData.getSpellBookData(stack).getSpellCount() > 0;
+        return LegacySpellData.hasSpellData(stack) || LegacySpellBookData.getSpellBookData(stack).spellCount > 0;
     }
 }

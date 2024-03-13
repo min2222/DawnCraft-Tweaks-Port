@@ -15,29 +15,17 @@ import com.afunproject.dawncraft.dungeon.block.entity.DungeonBlockEntities;
 import com.afunproject.dawncraft.dungeon.item.DungeonItems;
 import com.afunproject.dawncraft.dungeon.item.RebirthStaffItem;
 import com.afunproject.dawncraft.entities.DawnCraftEntities;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.mojang.math.Transformation;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.model.BakedItemModel;
-import net.minecraftforge.client.model.ItemTextureQuadConverter;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -84,13 +72,13 @@ public class ClientEventRegister {
 		registerGUIModel("cursed_mask", registry);
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void registerGUIModel(String name, Map<ResourceLocation, BakedModel> registry) {
-		Minecraft mc = Minecraft.getInstance();
+		//TODO
+		/*Minecraft mc = Minecraft.getInstance();
 		ResourceLocation loc = Constants.loc(name+"_gui");
 		TextureAtlasSprite sprite = mc.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(Constants.loc("item/"+name));
 		BakedQuad quads = ItemTextureQuadConverter.genQuad(Transformation.identity(), 0, 0, 16, 16, 0, sprite, Direction.SOUTH, 0xFFFFFFFF, 2);
 		ImmutableMap<TransformType, Transformation> map = ImmutableMap.of(TransformType.GUI, Transformation.identity(), TransformType.NONE, Transformation.identity());
-		registry.put(loc, new BakedItemModel(ImmutableList.of(quads), sprite, map, ItemOverrides.EMPTY, false, true));
+		registry.put(loc, new BakedItemModel(ImmutableList.of(quads), sprite, map, ItemOverrides.EMPTY, false, true));*/
 	}
 }
