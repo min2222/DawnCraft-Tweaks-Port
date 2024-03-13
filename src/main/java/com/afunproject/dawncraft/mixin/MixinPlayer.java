@@ -135,15 +135,15 @@ public abstract class MixinPlayer extends LivingEntity {
 		return items;
 	}
 
-	@Inject(at=@At("HEAD"), method = "getExperienceReward(Lnet/minecraft/world/entity/player/Player;)I", cancellable = true)
-	protected void getExperienceReward(Player player, CallbackInfoReturnable<Integer> callback) {
+	@Inject(at=@At("HEAD"), method = "getExperienceReward()I", cancellable = true)
+	protected void getExperienceReward(CallbackInfoReturnable<Integer> cir) {
 		if (!DCConfig.harderKeepInventory.get() |! level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) return;
 		int loss = 5;
 		if (hasEffect(DawnCraftEffects.FRACTURED_SOUL.get())) loss *= (getEffect(DawnCraftEffects.FRACTURED_SOUL.get()).getAmplifier() + 1);
 		drop(CrystallizedXPItem.withValue(totalExperience - getLoss(loss)), true, false);
 		giveExperiencePoints(-totalExperience);
 	}
-	
+
 	public int getLoss(int loss) {
 		int totalLoss = 0;
 		for (int i = 1; i <= loss; i++) {

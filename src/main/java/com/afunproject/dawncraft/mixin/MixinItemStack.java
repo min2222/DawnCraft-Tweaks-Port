@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack {
 
-	@Inject(at=@At("HEAD"), method = "m_204121_(Lnet/minecraft/core/Registry;Lnet/minecraft/world/level/block/state/pattern/BlockInWorld;)Z", cancellable = true)
-	public void m_204121_(Registry<Block> registry, BlockInWorld block, CallbackInfoReturnable<Boolean> callback) {
+	@Inject(at=@At("HEAD"), method = "hasAdventureModePlaceTagForBlock(Lnet/minecraft/core/Registry;Lnet/minecraft/world/level/block/state/pattern/BlockInWorld;)Z", cancellable = true)
+	public void hasAdventureModePlaceTagForBlock(Registry<Block> registry, BlockInWorld block, CallbackInfoReturnable<Boolean> callback) {
 		if (getItem() instanceof AdventureItem) {
 			callback.setReturnValue(true);
 			callback.cancel();
