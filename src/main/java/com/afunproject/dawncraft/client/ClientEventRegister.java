@@ -88,8 +88,7 @@ public class ClientEventRegister {
 	public static void registerGUIModel(String name, Map<ResourceLocation, BakedModel> registry) {
 		Minecraft mc = Minecraft.getInstance();
 		ResourceLocation loc = Constants.loc(name+"_gui");
-		TextureAtlasSprite sprite = mc.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
-				.apply(Constants.loc("item/"+name));
+		TextureAtlasSprite sprite = mc.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(Constants.loc("item/"+name));
 		BakedQuad quads = ItemTextureQuadConverter.genQuad(Transformation.identity(), 0, 0, 16, 16, 0, sprite, Direction.SOUTH, 0xFFFFFFFF, 2);
 		ImmutableMap<TransformType, Transformation> map = ImmutableMap.of(TransformType.GUI, Transformation.identity(), TransformType.NONE, Transformation.identity());
 		registry.put(loc, new BakedItemModel(ImmutableList.of(quads), sprite, map, ItemOverrides.EMPTY, false, true));

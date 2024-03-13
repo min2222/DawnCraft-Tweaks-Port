@@ -1,11 +1,12 @@
 package com.afunproject.packtweaks.data;
 
 import com.afunproject.dawncraft.Constants;
+
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD)
 public class DataGenerators {

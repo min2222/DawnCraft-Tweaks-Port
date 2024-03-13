@@ -14,11 +14,12 @@ import com.feywild.quest_giver.quest.task.TaskTypes;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.commands.arguments.coordinates.WorldCoordinates;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -50,7 +51,7 @@ public class QuestEvents {
 
 	@SubscribeEvent
 	public void advancementTrigger(AdvancementEvent event) {
-		QuestData quests = QuestData.get((ServerPlayer) event.getPlayer());
+		QuestData quests = QuestData.get((ServerPlayer) event.getEntity());
 		quests.checkComplete(AdvancementTask.INSTANCE, event.getAdvancement());
 	}
 

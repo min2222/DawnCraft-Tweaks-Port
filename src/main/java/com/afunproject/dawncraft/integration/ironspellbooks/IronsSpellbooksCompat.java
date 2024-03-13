@@ -9,5 +9,4 @@ public class IronsSpellbooksCompat {
     public static boolean isSpellBook(ItemStack stack) {
         return SpellData.hasSpellData(stack) || SpellBookData.getSpellBookData(stack).getSpellCount() > 0;
     }
-    
 }

@@ -9,6 +9,7 @@ import com.afunproject.dawncraft.invasion.InvasionKey;
 import com.afunproject.dawncraft.invasion.InvasionRegistry;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
 import net.mcreator.simplemobs.entity.*;
 import net.mcreator.simplemobs.init.SimpleMobsModEntities;
 import net.mcreator.simplemobs.init.SimpleMobsModItems;
@@ -17,8 +18,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,7 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -66,8 +66,8 @@ public class SimpleMobsEvents {
 
 	@SubscribeEvent
 	public void playerJoinWorld(PlayerLoggedInEvent event) {
-		if (event.getPlayer() instanceof ServerPlayer) {
-			Player player = event.getPlayer();
+		if (event.getEntity() instanceof ServerPlayer) {
+			Player player = event.getEntity();
 			LazyOptional<SpawnTracker> optional = player.getCapability(DCCapabilities.SPAWN_TRACKER);
 			if (optional.isPresent()) {
 				SpawnTracker spawnTracker = optional.resolve().get();
@@ -84,7 +84,7 @@ public class SimpleMobsEvents {
 	@SubscribeEvent
 	public void playerClone(PlayerEvent.Clone event) {
 		Player original = event.getOriginal();
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		original.reviveCaps();
 		LazyOptional<SpawnTracker> optionalOld = original.getCapability(DCCapabilities.SPAWN_TRACKER);
 		LazyOptional<SpawnTracker> optional = player.getCapability(DCCapabilities.SPAWN_TRACKER);
@@ -92,10 +92,10 @@ public class SimpleMobsEvents {
 	}
 
 	@SubscribeEvent
-	public void entityJoinWorld(EntityJoinWorldEvent event) {
+	public void entityJoinWorld(EntityJoinLevelEvent event) {
 		if (event.getEntity() instanceof Getsuga65Entity) {
 			Getsuga65Entity entity = (Getsuga65Entity) event.getEntity();
-			entity.setCustomName(new TextComponent("Getsuga65"));
+			entity.setCustomName(Component.literal("Getsuga65"));
 			entity.setCustomNameVisible(true);
 			entity.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("hexerei", "warhammer"))));
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("scattered_weapons", "hunter_armor_chestplate"))));
@@ -106,66 +106,66 @@ public class SimpleMobsEvents {
 			entity.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(EpicFightItems.IRON_TACHI.get()));
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(SimpleMobsModItems.DIABOLIUM_CHESTPLATE.get()));
 			entity.setItemSlot(EquipmentSlot.LEGS, new ItemStack(SimpleMobsModItems.DIABOLIUM_LEGGINGS.get()));
-			entity.setCustomName(new TextComponent("Wooden_Day"));
+			entity.setCustomName(Component.literal("Wooden_Day"));
 		}
 		if (event.getEntity() instanceof ShadowMewYTEntity) {
 			ShadowMewYTEntity entity = (ShadowMewYTEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
-			entity.setCustomName(new TextComponent("ShadowMewYT"));
+			entity.setCustomName(Component.literal("ShadowMewYT"));
 		}
 		if (event.getEntity() instanceof SolarPixelEntity) {
 			SolarPixelEntity entity = (SolarPixelEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("cataclysm", "ignitium_chestplate"))));
-			entity.setCustomName(new TextComponent("SolarPixel"));
+			entity.setCustomName(Component.literal("SolarPixel"));
 		}
 		if (event.getEntity() instanceof Merlin1306Entity) {
 			Merlin1306Entity entity = (Merlin1306Entity) event.getEntity();
 			entity.setCustomNameVisible(true);
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("ob_aquamirae", "abyssal_chestplate"))));
-			entity.setCustomName(new TextComponent("merlin1306"));
+			entity.setCustomName(Component.literal("merlin1306"));
 		}
 		if (event.getEntity() instanceof UGoneEntity) {
 			UGoneEntity entity = (UGoneEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
 			entity.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(EpicFightItems.IRON_DAGGER.get()));
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(EpicFightItems.STRAY_ROBE.get()));
-			entity.setCustomName(new TextComponent("uGone"));
+			entity.setCustomName(Component.literal("uGone"));
 		}
 		if (event.getEntity() instanceof MonikaSunriseEntity) {
 			MonikaSunriseEntity entity = (MonikaSunriseEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
-			entity.setCustomName(new TextComponent("MonikaSunrise"));
+			entity.setCustomName(Component.literal("MonikaSunrise"));
 		}
 		if (event.getEntity() instanceof YesImDavidEntity) {
 			YesImDavidEntity entity = (YesImDavidEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("ob_core", "paladin_chestplate"))));
-			entity.setCustomName(new TextComponent("YesImDavid"));
+			entity.setCustomName(Component.literal("YesImDavid"));
 		}
 		if (event.getEntity() instanceof LiverCirrhosisEntity) {
 			LiverCirrhosisEntity entity = (LiverCirrhosisEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("nourished_end", "voidsteel_armor_chestplate"))));
 			entity.setItemSlot(EquipmentSlot.LEGS, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("nourished_end", "voidsteel_armor_leggings"))));
-			entity.setCustomName(new TextComponent("LiverCirrhosis"));
+			entity.setCustomName(Component.literal("LiverCirrhosis"));
 		}
 		if (event.getEntity() instanceof ManuelPokyEntity) {
 			ManuelPokyEntity entity = (ManuelPokyEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
-			entity.setCustomName(new TextComponent("ManuelPoky"));
+			entity.setCustomName(Component.literal("ManuelPoky"));
 		}
 		if (event.getEntity() instanceof JungharamEntity) {
 			JungharamEntity entity = (JungharamEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
 			entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
-			entity.setCustomName(new TextComponent("Jungharam"));
+			entity.setCustomName(Component.literal("Jungharam"));
 		}
 		if (event.getEntity() instanceof PPXEntity) {
 			PPXEntity entity = (PPXEntity) event.getEntity();
 			entity.setCustomNameVisible(true);
-			entity.setCustomName(new TextComponent("PPX"));
+			entity.setCustomName(Component.literal("PPX"));
 		}
 	}
 
@@ -200,7 +200,7 @@ public class SimpleMobsEvents {
 			int time = player.getRandom().nextInt(30000) + 6000;
 			optional.resolve().get().setNextSpawn(time);
 			player.level.playSound(null, player.position().x, player.position().y, player.position().z, SoundEvents.ENDER_DRAGON_AMBIENT, SoundSource.HOSTILE, 1f, player.level.random.nextFloat());
-			player.sendMessage(Component.translatable("message.dawncraft.invasions_enabled_0").withStyle(ChatFormatting.RED), null);
+			player.sendSystemMessage(Component.translatable("message.dawncraft.invasions_enabled_0").withStyle(ChatFormatting.RED));
 		}
 		return 0;
 	}
