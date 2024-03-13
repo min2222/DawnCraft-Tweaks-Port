@@ -11,7 +11,8 @@
 		"MixinItemStack",
 		"MixinLivingEntity",
 		"MixinMob",
-		"MixinPlayer"
+		"MixinPlayer",
+		"MixinResourceLocation"
 	],
 	"client": [
       	"MixinEntityRenderer",
